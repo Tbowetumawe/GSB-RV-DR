@@ -8,9 +8,12 @@ package fr.gsb.rv.dr.utilitaires;
 import fr.gsb.rv.dr.entites.Praticien;
 import javafx.geometry.Insets;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
@@ -60,6 +63,28 @@ public class PanneauPraticiens extends Pane  {
         rbCoefConfiance.setSelected(true);
         rbCoefNotoriete.setUserData(CRITERE_COEF_NOTORIETE);
         rbDateVisite.setUserData(CRITERE_DATE_VISITE);
+        
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15, 12, 15, 12));
+        hbox.setSpacing(10);
+        
+        hbox.getChildren().addAll(rbCoefConfiance,rbCoefNotoriete,rbDateVisite);
+        vbox.getChildren().add(hbox);
+        
+        
+        TableColumn<Praticien,String> colNumero = new TableColumn<Praticien,String>("Numéro");
+        colNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
+        tabPraticiens.getColumns().add(colNumero);
+       
+        
+        TableColumn<Praticien,String> colNom = new TableColumn<Praticien,String>("Nom");
+        colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        tabPraticiens.getColumns().add(colNom);
+        
+        
+        TableColumn<Praticien,String> colVille = new TableColumn<Praticien,String>("Ville");
+        colVille.setCellValueFactory(new PropertyValueFactory<>("ville"));
+        tabPraticiens.getColumns().add(colVille);
         
     }   
 
