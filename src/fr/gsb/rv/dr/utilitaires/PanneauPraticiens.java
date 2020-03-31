@@ -40,6 +40,7 @@ public class PanneauPraticiens extends Pane  {
     private TableView<Praticien> tabPraticiens = new TableView<Praticien>();
 
     public PanneauPraticiens() {
+        
         vuePraticien = new GridPane();
         vuePraticien.setHgap(10);
         vuePraticien.setVgap(10);
@@ -52,12 +53,11 @@ public class PanneauPraticiens extends Pane  {
         
         final ToggleGroup group = new ToggleGroup();
         rbCoefConfiance = new RadioButton("Confiance");
-        rbCoefConfiance.setToggleGroup(group);
-        
         rbCoefNotoriete = new RadioButton("Notoriété");
-        rbCoefNotoriete.setToggleGroup(group);
-        
         rbDateVisite = new RadioButton("Date Visite");
+        
+        rbCoefConfiance.setToggleGroup(group);
+        rbCoefNotoriete.setToggleGroup(group);
         rbDateVisite.setToggleGroup(group);
         
         rbCoefConfiance.setUserData(CRITERE_COEF_CONFIANCE);
