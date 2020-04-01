@@ -12,6 +12,7 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -46,7 +47,7 @@ public class PanneauPraticiens extends Pane  {
     private GridPane vuePraticien;
     private VBox vbox;
     
-    private TableView<Praticien> tabPraticiens = new TableView<Praticien>();
+    private TableView<Praticien> table = new TableView<Praticien>();
 
     public PanneauPraticiens() {
         
@@ -92,28 +93,40 @@ public class PanneauPraticiens extends Pane  {
         colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
         colVille.setCellValueFactory(new PropertyValueFactory<>("ville"));
         
-        tabPraticiens.getColumns().add(colNumero);
-        tabPraticiens.getColumns().add(colNom);
-        tabPraticiens.getColumns().add(colVille);
+        table.getColumns().add(colNumero);
+        table.getColumns().add(colNom);
+        table.getColumns().add(colVille);
         
-        vbox.getChildren().add(tabPraticiens);
+        vbox.getChildren().add(table);
         
-        //rafraichir();
-        rbCoefConfiance.setOnAction((ActionEvent event) -> {
-            critereTri = CRITERE_COEF_CONFIANCE;
-            rafraichir();
+        
+        rbCoefConfiance.setOnAction(
+                new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event){
+                        critereTri = CRITERE_COEF_CONFIANCE;
+                        rafraichir();
+                    }
             }
         );
         
-        rbCoefNotoriete.setOnAction((ActionEvent event) -> {
-            critereTri = CRITERE_COEF_NOTORIETE;
-            rafraichir();
+        rbCoefNotoriete.setOnAction(
+                new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event){
+                        critereTri = CRITERE_COEF_NOTORIETE;
+                        rafraichir();
+                    }
             }
         );
         
-        rbDateVisite.setOnAction((ActionEvent event) -> {
-            critereTri = CRITERE_DATE_VISITE;
-            rafraichir();
+        rbDateVisite.setOnAction(
+                new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event){
+                        critereTri = CRITERE_DATE_VISITE;
+                        rafraichir();
+                    }
             }
         );
         
@@ -126,6 +139,7 @@ public class PanneauPraticiens extends Pane  {
     public GridPane getVuePraticien() {
         return vuePraticien;
     }
+    
 
     public void setVuePraticien(GridPane vuePraticien) {
         this.vuePraticien = vuePraticien;
@@ -133,16 +147,14 @@ public class PanneauPraticiens extends Pane  {
     
     
 
-    
     public void rafraichir(){
-        List<Praticien> praticiens;
+        
         try{
-            praticiens = ModeleGsbRv.getPraticiensHesitants();
+            List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
             ObservableList<Praticien> list;
             if(this.critereTri == CRITERE_COEF_CONFIANCE){
                
                 Collections.sort(praticiens, new ComparateurCoefConfiance());
-                
             }
             else if(this.critereTri == CRITERE_COEF_NOTORIETE){
                
@@ -157,7 +169,7 @@ public class PanneauPraticiens extends Pane  {
             }
             
             list = FXCollections.observableArrayList(praticiens);
-            tabPraticiens.setItems(list);
+            table.setItems(list);
             
         }
         catch(Exception e){

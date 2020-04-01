@@ -63,11 +63,8 @@ public class ModeleGsbRv {
                 + "inner join RapportVisite"
                 + "on Praticien.pra_num = RapportVisite.pra_num "
                 + "group by Praticien.pra_num";
-
-        
         try {
             PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement( requete ) ;
-
             ResultSet resultat = requetePreparee.executeQuery() ;
             
             if( resultat.next() ){
@@ -80,15 +77,14 @@ public class ModeleGsbRv {
                 praticien.setDateDernierVisite(Date.valueOf(resultat.getString("date")).toLocalDate());
                 praticien.setDernierCoefConfiance(Integer.valueOf(resultat.getString("rap_coefConfiance")));
                 
-                
                 praticiens.add(praticien);
-                requetePreparee.close() ;
-            }
-               
+                //requetePreparee.close() ;
+                
+            }   
             else {
                 return null ;
             }
-            return praticiens;
+           return praticiens; 
         }
         catch( Exception e ){
             return null;
