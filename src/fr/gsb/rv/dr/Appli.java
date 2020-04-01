@@ -108,7 +108,7 @@ public class Appli extends Application {
   
         BorderPane root = new BorderPane();
         root.setTop(barreMenu);
-        root.setCenter(stackPane);
+        //root.setCenter(stackPane);
         
         Scene scene = new Scene(root, 550, 400);
         

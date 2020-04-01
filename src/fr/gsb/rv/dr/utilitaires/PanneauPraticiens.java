@@ -6,6 +6,12 @@
 package fr.gsb.rv.dr.utilitaires;
 
 import fr.gsb.rv.dr.entites.Praticien;
+import fr.gsb.rv.dr.modeles.ModeleGsbRv;
+import java.util.Collections;
+import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -52,7 +58,7 @@ public class PanneauPraticiens extends Pane  {
         vbox = new VBox();
         vbox.setPadding(new Insets(15, 12, 15, 12));
         vbox.setSpacing(10);
-        vbox.setStyle("-fx-background-color: white;");
+        
         
         final ToggleGroup group = new ToggleGroup();
         rbCoefConfiance = new RadioButton("Confiance");
@@ -78,7 +84,6 @@ public class PanneauPraticiens extends Pane  {
         hbox.getChildren().addAll(rbCoefConfiance,rbCoefNotoriete,rbDateVisite);
         vbox.getChildren().add(hbox);
         
-        
         TableColumn<Praticien,String> colNumero = new TableColumn<Praticien,String>("Numéro");
         TableColumn<Praticien,String> colNom = new TableColumn<Praticien,String>("Nom");
         TableColumn<Praticien,String> colVille = new TableColumn<Praticien,String>("Ville");
@@ -93,7 +98,30 @@ public class PanneauPraticiens extends Pane  {
         
         vbox.getChildren().add(tabPraticiens);
         
-    }   
+        //rafraichir();
+        rbCoefConfiance.setOnAction((ActionEvent event) -> {
+            critereTri = CRITERE_COEF_CONFIANCE;
+            rafraichir();
+            }
+        );
+        
+        rbCoefNotoriete.setOnAction((ActionEvent event) -> {
+            critereTri = CRITERE_COEF_NOTORIETE;
+            rafraichir();
+            }
+        );
+        
+        rbDateVisite.setOnAction((ActionEvent event) -> {
+            critereTri = CRITERE_DATE_VISITE;
+            rafraichir();
+            }
+        );
+        
+        vuePraticien.add(vbox, 1, 0);
+        
+    }  
+    
+    
 
     public GridPane getVuePraticien() {
         return vuePraticien;
@@ -107,6 +135,35 @@ public class PanneauPraticiens extends Pane  {
 
     
     public void rafraichir(){
+        List<Praticien> praticiens;
+        try{
+            praticiens = ModeleGsbRv.getPraticiensHesitants();
+            ObservableList<Praticien> list;
+            if(this.critereTri == CRITERE_COEF_CONFIANCE){
+               
+                Collections.sort(praticiens, new ComparateurCoefConfiance());
+                
+            }
+            else if(this.critereTri == CRITERE_COEF_NOTORIETE){
+               
+                Collections.sort(praticiens, new ComparateurCoefNotoriete());
+                Collections.reverse(praticiens);
+                
+            }
+            else{
+                Collections.sort(praticiens, new ComparateurDateVisite());
+                Collections.reverse(praticiens);
+               
+            }
+            
+            list = FXCollections.observableArrayList(praticiens);
+            tabPraticiens.setItems(list);
+            
+        }
+        catch(Exception e){
+                System.out.println(e);
+
+         }
         
     }
     
