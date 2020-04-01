@@ -125,9 +125,7 @@ public class Appli extends Application {
                     Session.ouvrir(ModeleGsbRv.seConnecter((result.get()).getKey(),(result.get()).getValue()));
                     
                     System.out.println("test 1");
-                    
-                    
-                    
+
                     if(Session.getSession().getLeVisiteur() != null ){
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setHeaderText("Vous êtes Connecter avec Succés");
@@ -137,47 +135,18 @@ public class Appli extends Application {
                         itemSeConnecter.setDisable(true);
                         menuRapports.setDisable(false);
                         menuPraticiens.setDisable(false);
-                        System.out.println("Session Ouvert:"+Session.getSession().getLeVisiteur().toString());
-                        
-                        
-                        
-                        
-                        
+                        System.out.println("Session Ouvert:"+Session.getSession().getLeVisiteur().toString());    
                     }
 
                     else {
-                        int usernameattempts = 1;
-                        int tentative = 2;
-                        while (Session.getSession().getLeVisiteur() == null && usernameattempts < 3 ) {
+                        
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setContentText("Saisir Incorrect. Vous avez "+ tentative +" tentative restante");
+                            alert.setContentText("Saisir Incorrect. ");
                             alert.showAndWait();
                             Optional<Pair<String, String>> result1 = vue.getDialog().showAndWait();
                             System.out.println(result1);
-                            Session.ouvrir(ModeleGsbRv.seConnecter((result1.get()).getKey(),(result1.get()).getValue()));
-                            usernameattempts++;
-                            tentative--;
-                        }
-                        if(Session.getSession().getLeVisiteur() == null){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setContentText("Vous avez dépassé la tentative de connexion !!!");
-                            alert.showAndWait();
-                            System.exit(0);
-                        }
-                        else{
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setHeaderText("Vous êtes Connecter avec Succés");
-                            alert.setContentText("Bonjour " + Session.getSession().getLeVisiteur().getNom());
-                            alert.showAndWait();
-                            itemSeDeconnecter.setDisable(false);
-                            itemSeConnecter.setDisable(true);
-                            menuRapports.setDisable(false);
+                            Session.ouvrir(ModeleGsbRv.seConnecter((result1.get()).getKey(),(result1.get()).getValue()));       
                         
-                            menuPraticiens.setDisable(false);
-                            System.out.println("Session Ouvert:"+Session.getSession().getLeVisiteur().toString());
-                            
-                            
-                        }
                     }
                 }
             }
@@ -189,29 +158,8 @@ public class Appli extends Application {
         });
             
         
-        itemSeDeconnecter.setOnAction((ActionEvent event) -> {
-            if (Session.getSession() != null) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Déconnexion");
-                alert.setContentText("Voulez-vous déconnecter "+ Session.getSession().getLeVisiteur().getNom() +" ?");
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
-                    Session.fermer();
-                    itemSeDeconnecter.setDisable(false);
-                    itemSeConnecter.setDisable(true);
-                    menuRapports.setDisable(false);     
-                    menuPraticiens.setDisable(false);
-                    root.setTop(barreMenu);
-                    primaryStage.setScene(scene);
-                    primaryStage.show();
-                    System.out.println("Session Fermer");
-                    
-                }
-            }
-        });
-        
-        
-        //Navigation
+      
+      
       
         itemConsulter.setOnAction((ActionEvent event) ->{
             System.out.println("'[Rapports]'"+Session.getSession().getLeVisiteur().getPrenom()+' '+Session.getSession().getLeVisiteur().getNom() );
