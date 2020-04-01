@@ -58,11 +58,11 @@ public class ModeleGsbRv {
         
         List<Praticien> praticiens = new ArrayList<Praticien>();
         
-        String requete = "select pra_num, pra_nom,pra_ville,pra_coefnotoriete,max(r.rap_date_visite) as date,r.rap_coefConfiance " 
-                + "from Praticien p "
-                + "inner join RapportVisite r "
-                + "on p.pra_num = r.pra_num "
-                + "group by p.pra_num";
+        String requete = "select Praticien.pra_num, Praticien.pra_nom, Praticien.pra_ville, Praticien.pra_coefnotoriete, max(RapportVisite.rap_date_visite) as date,RapportVisite.rap_coefConfiance " 
+                + "from Praticien"
+                + "inner join RapportVisite"
+                + "on Praticien.pra_num = RapportVisite.pra_num "
+                + "group by Praticien.pra_num";
 
         
         try {
@@ -71,7 +71,7 @@ public class ModeleGsbRv {
             ResultSet resultat = requetePreparee.executeQuery() ;
             
             if( resultat.next() ){
-               //do{
+               
                 Praticien praticien = new Praticien() ;
                 praticien.setNumero(resultat.getString("pra_num") );
                 praticien.setNom(resultat.getString("pra_nom") );
@@ -82,12 +82,9 @@ public class ModeleGsbRv {
                 
                 
                 praticiens.add(praticien);
+                requetePreparee.close() ;
             }
-               /*while(resultat.next() == true);*/
-                
                
-                
-            //}
             else {
                 return null ;
             }

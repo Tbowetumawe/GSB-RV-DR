@@ -17,6 +17,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 /**
  *
@@ -68,8 +71,9 @@ public class PanneauPraticiens extends Pane  {
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
-        Label titre = new Label("Sélectionner un critère de tri :");
-        vbox.getChildren().add(titre);
+        Text title = new Text("Sélectionner un critère de tri :");
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        vbox.getChildren().add(title);
         
         hbox.getChildren().addAll(rbCoefConfiance,rbCoefNotoriete,rbDateVisite);
         vbox.getChildren().add(hbox);
@@ -91,6 +95,16 @@ public class PanneauPraticiens extends Pane  {
         
     }   
 
+    public GridPane getVuePraticien() {
+        return vuePraticien;
+    }
+
+    public void setVuePraticien(GridPane vuePraticien) {
+        this.vuePraticien = vuePraticien;
+    }
+    
+    
+
     
     public void rafraichir(){
         
@@ -100,6 +114,12 @@ public class PanneauPraticiens extends Pane  {
     public int getCritereTri() {
         return critereTri;
     }
+
+    public void setCritereTri(int critereTri) {
+        this.critereTri = critereTri;
+    }
+    
+    
     
     
     

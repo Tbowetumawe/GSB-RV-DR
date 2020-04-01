@@ -49,9 +49,7 @@ import javafx.util.Pair;
  * @author developpeur
  */
 public class Appli extends Application {
-    Visiteur visiteur;
     
-    StackPane stackPane = new StackPane();
        
     
     //méthod d'implementation boite de dialogue
@@ -71,9 +69,19 @@ public class Appli extends Application {
             
         } 
     
+        Visiteur visiteur;
+    
+        PanneauPraticiens praticien = new PanneauPraticiens();
+
+        GridPane vuepraticien = praticien.getVuePraticien();
+        StackPane stackPane = new StackPane();
+            
+    
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
         
+        stackPane.getChildren().addAll(vuepraticien);
+        stackPane.setPrefSize(300, 150);
     
   //creation du barre de menu
         MenuBar barreMenu = new MenuBar();
@@ -100,12 +108,19 @@ public class Appli extends Application {
   
         BorderPane root = new BorderPane();
         root.setTop(barreMenu);
+        root.setCenter(stackPane);
         
         Scene scene = new Scene(root, 550, 400);
         
         primaryStage.setTitle("GSB-RV-DR");
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+        
+        
+        
+        
+        
         
         // function de l'item exit ou Quitter
         itemQuitter.setOnAction((ActionEvent event) -> {
@@ -135,7 +150,10 @@ public class Appli extends Application {
                         itemSeConnecter.setDisable(true);
                         menuRapports.setDisable(false);
                         menuPraticiens.setDisable(false);
-                        System.out.println("Session Ouvert:"+Session.getSession().getLeVisiteur().toString());    
+                        System.out.println("Session Ouvert:"+Session.getSession().getLeVisiteur().toString()); 
+                        
+                        praticien.setCritereTri(PanneauPraticiens.CRITERE_COEF_CONFIANCE);
+                        root.setCenter(stackPane);
                     }
 
                     else {
@@ -168,16 +186,16 @@ public class Appli extends Application {
         itemHesitant.setOnAction((ActionEvent event) ->{
             try{
                 List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
-                for(Praticien unP : praticiens){
+                /*for(Praticien unP : praticiens){
                     System.out.println(unP+"hello");
-                }
+                }*/
                 
                 System.out.println("test ComparateurCoefConfiance ");
                 Collections.sort(praticiens, new ComparateurCoefConfiance());
                 for(Praticien unP : praticiens){
-                    System.out.println(unP);
+                    System.out.println(unP.getDernierCoefConfiance());
                 }
-
+                
                 System.out.println("test ComparateurCoefNotoriete ");
                 Collections.sort(praticiens, new ComparateurCoefNotoriete());
                 Collections.reverse(praticiens);
@@ -203,7 +221,14 @@ public class Appli extends Application {
         
     }
       
-    
+   /* public void addstack(){
+            
+            StackPane stackPane = new StackPane();
+            stackPane.getChildren().addAll(vuepraticien);
+            stackPane.setPrefSize(300, 150);
+            //hb.getChildren().add(stackPane);
+            //HBox.setHgrow(stackPane, Priority.ALWAYS);
+        }*/
 
     /**
      * @param args the command line arguments
