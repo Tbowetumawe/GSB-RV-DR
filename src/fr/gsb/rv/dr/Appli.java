@@ -125,7 +125,7 @@ public class Appli extends Application {
                     Session.ouvrir(ModeleGsbRv.seConnecter((result.get()).getKey(),(result.get()).getValue()));
                     
                     System.out.println("test 1");
-
+                    
                     if(Session.getSession().getLeVisiteur() != null ){
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setHeaderText("Vous êtes Connecter avec Succés");
@@ -154,7 +154,7 @@ public class Appli extends Application {
                 System.out.println(e);
 
             }
-            System.out.println(Session.getSession().getLeVisiteur());
+            //System.out.println(Session.getSession().getLeVisiteur());
         });
             
         
@@ -168,35 +168,36 @@ public class Appli extends Application {
         itemHesitant.setOnAction((ActionEvent event) ->{
             try{
                 List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
-                for(Praticien i : praticiens){
-                    System.out.println(i+"hello");
+                for(Praticien unP : praticiens){
+                    System.out.println(unP+"hello");
                 }
-
+                
                 System.out.println("test ComparateurCoefConfiance ");
                 Collections.sort(praticiens, new ComparateurCoefConfiance());
-                for(Praticien i : praticiens){
-                    System.out.println(i);
+                for(Praticien unP : praticiens){
+                    System.out.println(unP);
                 }
 
                 System.out.println("test ComparateurCoefNotoriete ");
                 Collections.sort(praticiens, new ComparateurCoefNotoriete());
                 Collections.reverse(praticiens);
-                for(Praticien i : praticiens){
-                    System.out.println(i);
+                for(Praticien unP : praticiens){
+                    System.out.println(unP);
                 }
 
                 System.out.println("test ComparateurDateVisite ");
                 Collections.sort(praticiens, new ComparateurDateVisite());
                 Collections.reverse(praticiens);
-                for(Praticien i : praticiens){
-                    System.out.println(i);
-                    }
+                for(Praticien unP : praticiens){
+                    System.out.println(unP);
+                }
             }
+            
             catch( Exception e){
                 System.out.println(e);
             }
            
-            System.out.println("'[Praticiens]'" + Session.getSession().getLeVisiteur().getPrenom()+' '+Session.getSession().getLeVisiteur().getNom() );
+            //System.out.println("'[Praticiens]'" + Session.getSession().getLeVisiteur().getPrenom()+' '+Session.getSession().getLeVisiteur().getNom() );
         });
        
         
