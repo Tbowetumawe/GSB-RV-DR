@@ -58,8 +58,7 @@ public class PanneauPraticiens extends Pane  {
 
         vbox = new VBox();
         vbox.setPadding(new Insets(15, 12, 15, 12));
-        vbox.setSpacing(10);
-        
+        vbox.setSpacing(10); 
         
         final ToggleGroup group = new ToggleGroup();
         rbCoefConfiance = new RadioButton("Confiance");

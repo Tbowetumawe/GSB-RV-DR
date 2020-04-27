@@ -116,17 +116,12 @@ public class Appli extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        
-        
-        
-        
-        
-        
         // function de l'item exit ou Quitter
         itemQuitter.setOnAction((ActionEvent event) -> {
             confirmation();
             Platform.exit();
         });
+        
         
         // function de l'item seConnecter
         itemSeConnecter.setOnAction((ActionEvent event) -> {
@@ -174,16 +169,16 @@ public class Appli extends Application {
             }
             //System.out.println(Session.getSession().getLeVisiteur());
         });
-            
-        
-      
+
       
       
         itemConsulter.setOnAction((ActionEvent event) ->{
             System.out.println("'[Rapports]'"+Session.getSession().getLeVisiteur().getPrenom()+' '+Session.getSession().getLeVisiteur().getNom() );
         });
         
+        
         itemHesitant.setOnAction((ActionEvent event) ->{
+            praticien.rafraichir();
             try{
                 List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
                 /*for(Praticien unP : praticiens){
