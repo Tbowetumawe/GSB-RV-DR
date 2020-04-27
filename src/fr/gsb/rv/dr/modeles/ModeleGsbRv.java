@@ -79,12 +79,12 @@ public class ModeleGsbRv {
                 
                 
                 praticiens.add(praticien);
-               }
-               while(resultat.next()== true);
+                }
+                while(resultat.next()== true);
                  
                 
-               requetePreparee.close();
-                    return praticiens;
+                requetePreparee.close();
+                return praticiens;
             } 
               
             else {

@@ -181,9 +181,9 @@ public class Appli extends Application {
             praticien.rafraichir();
             try{
                 List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
-                /*for(Praticien unP : praticiens){
+                for(Praticien unP : praticiens){
                     System.out.println(unP+"hello");
-                }*/
+                }
                 
                 System.out.println("test ComparateurCoefConfiance ");
                 Collections.sort(praticiens, new ComparateurCoefConfiance());
