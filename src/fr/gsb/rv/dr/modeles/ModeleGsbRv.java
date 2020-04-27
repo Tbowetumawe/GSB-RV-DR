@@ -68,7 +68,7 @@ public class ModeleGsbRv {
             ResultSet resultat = requetePreparee.executeQuery();
             
             if(resultat.next()){
-               
+               do{
                 Praticien praticien = new Praticien();
                 praticien.setNumero(resultat.getString("pra_num"));
                 praticien.setNom(resultat.getString("pra_nom"));
@@ -79,10 +79,14 @@ public class ModeleGsbRv {
                 
                 
                 praticiens.add(praticien);
-                //requetePreparee.close();
-                return praticiens; 
+               }
+               while(resultat.next()== true);
+                 
                 
-            }   
+               requetePreparee.close();
+                    return praticiens;
+            } 
+              
             else {
                 return null;
             }
