@@ -72,6 +72,8 @@ public class Appli extends Application {
         Visiteur visiteur;
     
         PanneauPraticiens praticien = new PanneauPraticiens();
+        PanneauRapports rapport = new PanneauRapports();
+        PanneauAccueil accueil = new PanneauAccueil();
 
         GridPane vuepraticien = praticien.getVuePraticien();
         StackPane stackPane = new StackPane();
