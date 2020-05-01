@@ -76,13 +76,16 @@ public class Appli extends Application {
         PanneauAccueil accueil = new PanneauAccueil();
 
         GridPane vuepraticien = praticien.getVuePraticien();
+        GridPane vueRapport = rapport.getVueRapports();
+        GridPane vueAccueil = accueil.getVueAccueil();
+        
         StackPane stackPane = new StackPane();
             
     
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
         
-        stackPane.getChildren().addAll(vuepraticien);
+        stackPane.getChildren().addAll(vueAccueil,vuepraticien, vueRapport);
         stackPane.setPrefSize(300, 150);
     
   //creation du barre de menu
@@ -111,7 +114,7 @@ public class Appli extends Application {
         BorderPane root = new BorderPane();
         root.setTop(barreMenu);
         //root.setCenter(stackPane);
-        
+        root.setCenter(stackPane);
         Scene scene = new Scene(root, 550, 400);
         
         primaryStage.setTitle("GSB-RV-DR");
