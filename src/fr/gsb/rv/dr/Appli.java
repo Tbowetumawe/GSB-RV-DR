@@ -85,7 +85,7 @@ public class Appli extends Application {
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
         
-        stackPane.getChildren().addAll(vueAccueil,vuepraticien, vueRapport);
+        stackPane.getChildren().addAll(vuepraticien,vueAccueil);
         stackPane.setPrefSize(300, 150);
     
   //creation du barre de menu
@@ -102,11 +102,13 @@ public class Appli extends Application {
         MenuItem itemQuitter = new MenuItem("Quitter");
         MenuItem itemConsulter = new MenuItem("Consulter");
         MenuItem itemHesitant = new MenuItem("Hésitants");
+       
         
         //ajout de l'item dans le menu
         menuFichier.getItems().addAll(itemSeConnecter, itemSeDeconnecter, itemQuitter );
         menuRapports.getItems().addAll(itemConsulter);
         menuPraticiens.getItems().addAll(itemHesitant);
+       
         
         //ajout menu à la barre de menu
         barreMenu.getMenus().addAll(menuFichier,menuRapports, menuPraticiens);
@@ -114,7 +116,7 @@ public class Appli extends Application {
         BorderPane root = new BorderPane();
         root.setTop(barreMenu);
         //root.setCenter(stackPane);
-        root.setCenter(stackPane);
+        
         Scene scene = new Scene(root, 550, 400);
         
         primaryStage.setTitle("GSB-RV-DR");
@@ -126,6 +128,7 @@ public class Appli extends Application {
             confirmation();
             Platform.exit();
         });
+        
         
         
         // function de l'item seConnecter
@@ -151,9 +154,9 @@ public class Appli extends Application {
                         menuRapports.setDisable(false);
                         menuPraticiens.setDisable(false);
                         System.out.println("Session Ouvert:"+Session.getSession().getLeVisiteur().toString()); 
-                        
                         praticien.setCritereTri(PanneauPraticiens.CRITERE_COEF_CONFIANCE);
                         root.setCenter(stackPane);
+                        changeTop(vueAccueil);
                     }
 
                     else {
@@ -163,6 +166,7 @@ public class Appli extends Application {
                             alert.showAndWait();
                             Optional<Pair<String, String>> result1 = vue.getDialog().showAndWait();
                             System.out.println(result1);
+                            changeTop(vueAccueil);
                             Session.ouvrir(ModeleGsbRv.seConnecter((result1.get()).getKey(),(result1.get()).getValue()));       
                         
                     }
@@ -176,6 +180,32 @@ public class Appli extends Application {
         });
 
       
+        itemSeDeconnecter.setOnAction((ActionEvent event) ->{
+            
+            if(Session.getSession().getLeVisiteur() != null ){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Vous êtes déconnecter avec Succés");
+                alert.setContentText("Déconnecté  vous " + Session.getSession().getLeVisiteur().getNom());
+                Optional<ButtonType> resultat = alert.showAndWait();
+                
+                if(resultat.get() == ButtonType.OK ){
+                    Session.fermer();
+                    itemSeDeconnecter.setDisable(true);
+                    itemSeConnecter.setDisable(false);
+                    menuRapports.setDisable(false);
+                    menuPraticiens.setDisable(false);
+                    //System.out.println("Session Ouvert:"+Session.getSession().getLeVisiteur().toString()); 
+                    //praticien.setCritereTri(PanneauPraticiens.CRITERE_COEF_CONFIANCE);
+                    root.setTop(barreMenu);
+                    root.setCenter(accueil.getVueAccueil());
+                    primaryStage.setScene(scene);
+                    primaryStage.show();
+                    
+                }
+                    
+            }
+            
+         });
       
         itemConsulter.setOnAction((ActionEvent event) ->{
             System.out.println("'[Rapports]'"+Session.getSession().getLeVisiteur().getPrenom()+' '+Session.getSession().getLeVisiteur().getNom() );
@@ -183,6 +213,7 @@ public class Appli extends Application {
         
         
         itemHesitant.setOnAction((ActionEvent event) ->{
+            
             praticien.rafraichir();
             try{
                 List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
@@ -221,15 +252,28 @@ public class Appli extends Application {
         
     }
       
-   /* public void addstack(){
-            
-            StackPane stackPane = new StackPane();
-            stackPane.getChildren().addAll(vuepraticien);
-            stackPane.setPrefSize(300, 150);
-            //hb.getChildren().add(stackPane);
-            //HBox.setHgrow(stackPane, Priority.ALWAYS);
-        }*/
-
+   private void changeTop(GridPane i) {
+       ObservableList<Node> childs = this.stackPane.getChildren();
+ 
+       if (childs.size() > 1) {
+           //
+           
+           for(Node n : childs){
+                n.setVisible(false);
+            }
+           
+           Node topNode = childs.get(childs.size()-1);
+          
+           
+           // This node will be brought to the front
+           Node newTopNode = childs.get(childs.size()-2);
+                  
+           topNode.setVisible(false);
+           topNode.toBack();
+          
+           newTopNode.setVisible(true);
+       }
+   }
     /**
      * @param args the command line arguments
      */

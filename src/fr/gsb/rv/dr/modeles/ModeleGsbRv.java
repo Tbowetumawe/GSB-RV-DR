@@ -1,6 +1,7 @@
 package fr.gsb.rv.dr.modeles;
 
 import fr.gsb.rv.dr.entites.Praticien;
+import fr.gsb.rv.dr.entites.RapportVisite;
 import fr.gsb.rv.dr.entites.Visiteur;
 import fr.gsb.rv.dr.technique.ConnexionBD;
 import fr.gsb.rv.dr.technique.ConnexionException;
@@ -9,10 +10,11 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ModeleGsbRv {
     
@@ -36,9 +38,7 @@ public class ModeleGsbRv {
                 visiteur.setMatricule( matricule );
                 visiteur.setNom( resultat.getString( "vis_nom" ) ) ;
                 visiteur.setPrenom(resultat.getString( "vis_prenom" ) ) ;
-               
-                
-                
+                 
                 requetePreparee.close() ;
                 return visiteur ;
             }
@@ -53,18 +53,17 @@ public class ModeleGsbRv {
     }
     
     public static List<Praticien> getPraticiensHesitants() throws ConnexionException{
-        
+
         Connection connexion = ConnexionBD.getConnexion();
-        
         List<Praticien> praticiens = new ArrayList<Praticien>();
         
-        String requete = "select p.pra_num, p.pra_nom, p.pra_ville, p.pra_coefnotoriete, max(rv.rap_date_visite) as date,rv.rap_coefConfiance " 
+        String requete = "select p.pra_num,p.pra_nom,p.pra_ville,p.pra_coefnotoriete,max(rv.rap_date_visite) as date,rv.rap_coefConfiance "
                 + "from Praticien p"
                 + "inner join RapportVisite rv"
-                + "on p.pra_num = rv.pra_num "
+                + "on p.pra_num = rv.pra_num"
                 + "group by p.pra_num";
         try {
-            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement( requete );
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement(requete);
             ResultSet resultat = requetePreparee.executeQuery();
             
             if(resultat.next()){
@@ -77,23 +76,103 @@ public class ModeleGsbRv {
                 praticien.setDateDernierVisite(Date.valueOf(resultat.getString("date")).toLocalDate());
                 praticien.setDernierCoefConfiance(Integer.valueOf(resultat.getString("rap_coefConfiance")));
                 
-                
                 praticiens.add(praticien);
+                
                 }
                 while(resultat.next()== true);
-                 
                 
                 requetePreparee.close();
                 return praticiens;
-            } 
-              
+            }   
             else {
                 return null;
-            }
-           
+            }    
         }
         catch( Exception e ){
             return null;
         } 
     }
+    
+    
+    
+    public static List<Visiteur> getVisiteurs() throws ConnexionException{
+        
+        Connection connexion = ConnexionBD.getConnexion();
+        List<Visiteur> visiteurs = new ArrayList<Visiteur>();
+        
+        String req = "select vis_matricule, vis_nom, vis_prenom"
+                + "from Visiteur v";
+        
+        try {
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement( req ) ;
+            ResultSet result = requetePreparee.executeQuery() ;
+            
+            if( result.next() ){
+                Visiteur visiteur = new Visiteur();
+                visiteur.setMatricule(result.getString("vis_matricule"));
+                visiteur.setNom(result.getString("vis_nom"));
+                visiteur.setPrenom(result.getString("vis_prenom"));
+                
+                visiteurs.add(visiteur);
+                requetePreparee.close();
+                
+            }
+            return visiteurs;
+        }
+         catch (Exception e) {
+            return null;
+        }
+            
+    }
+    
+    public static List<RapportVisite> getRapportVisite(String matricule, int mois, int annee) throws ConnexionException{
+        Connection connexion = ConnexionBD.getConnexion();
+        
+        List<RapportVisite> RVisite = new ArrayList<RapportVisite>();
+        
+        String req = "select vis_matricule, rap_num, rap_date_visite, rap_bilan, pra_num, rap_coefConfiance"
+                + "from RapportVisite";
+        try{
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement( req ) ;
+            
+            ResultSet result = requetePreparee.executeQuery() ;
+            if( result.next() ){
+               RapportVisite rpVisite = new RapportVisite();
+               rpVisite.setNumero(result.getInt("rap_num"));
+               rpVisite.setDateVisite(Date.valueOf(result.getString("rap_date_visite")).toLocalDate());
+               rpVisite.setBilan(result.getString("rap_bilan"));
+               rpVisite.setCoefConfiance(Integer.valueOf(result.getString("rap_coeConfiance")));
+               
+               RVisite.add(rpVisite);
+               requetePreparee.close();
+            }
+            return RVisite;
+        } 
+        catch (Exception e) {
+            return null;
+        }            
+    }
+  
+    public RapportVisite setRapportVisiteLu(String matricule, int numero)throws ConnexionException{
+        Connection connexion = ConnexionBD.getConnexion();
+        
+        String req = "";
+        
+        try{
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement( req ) ;
+            
+            ResultSet result = requetePreparee.executeQuery() ;
+            if( result.next() ){
+               RapportVisite rpVisite = new RapportVisite();
+            }
+            
+        }
+        
+        
+        catch (Exception e) {
+            return null;
+        } 
+       return null; 
+    }   
+    
 }

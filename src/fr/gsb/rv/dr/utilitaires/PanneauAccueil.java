@@ -7,6 +7,7 @@ package fr.gsb.rv.dr.utilitaires;
 
 import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -16,7 +17,7 @@ import javafx.scene.text.Text;
  *
  * @author developpeur
  */
-public class PanneauAccueil {
+public class PanneauAccueil extends Pane {
     
     private GridPane vueAccueil;
     private VBox vbox;

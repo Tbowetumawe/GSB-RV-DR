@@ -18,17 +18,23 @@ public class Praticien {
     private float coefNotoriete;
     private LocalDate dateDernierVisite;
     private int dernierCoefConfiance;
+    private String adresse;
+    private String codePostal;
+    private String prenom;
 
     public Praticien() {
     }
 
-    public Praticien(String numero, String nom, String ville, int coefNotoriete, LocalDate dateDernierVisite, int dernierCoefConfiance) {
+    public Praticien(String numero, String nom, String ville, int coefNotoriete, LocalDate dateDernierVisite, int dernierCoefConfiance, String adresse, String codePostal, String prenom ) {
         this.numero = numero;
         this.nom = nom;
         this.ville = ville;
         this.coefNotoriete = coefNotoriete;
         this.dateDernierVisite = dateDernierVisite;
         this.dernierCoefConfiance = dernierCoefConfiance;
+        this.adresse = adresse;
+        this.codePostal =  codePostal;
+        this.prenom = prenom;
     }
 
     public String getNumero() {
@@ -79,10 +85,31 @@ public class Praticien {
         this.dernierCoefConfiance = dernierCoefConfiance;
     }
 
-    @Override
-    public String toString() {
-        return "Praticien{" + "numero=" + numero + ", nom=" + nom + ", ville=" + ville + ", coefNotoriete=" + coefNotoriete + ", dateDernierVisite=" + dateDernierVisite + ", dernierCoefConfiance=" + dernierCoefConfiance + '}';
+    public String getAdresse() {
+        return adresse;
     }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+
+    public String getCodePostal() {
+        return codePostal;
+    }
+
+    public void setCodePostal(String codePostal) {
+        this.codePostal = codePostal;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    
     
     
     
