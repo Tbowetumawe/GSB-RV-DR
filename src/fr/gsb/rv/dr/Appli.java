@@ -8,14 +8,18 @@ package fr.gsb.rv.dr;
 import fr.gsb.rv.dr.entites.Praticien;
 import fr.gsb.rv.dr.entites.Visiteur;
 import fr.gsb.rv.dr.modeles.ModeleGsbRv;
+import fr.gsb.rv.dr.technique.ConnexionException;
 import fr.gsb.rv.dr.technique.Session;
 import fr.gsb.rv.dr.utilitaires.*;
 import fr.gsb.rv.dr.vue.VueConnexion;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -143,6 +147,12 @@ public class Appli extends Application {
                     Session.ouvrir(ModeleGsbRv.seConnecter((result.get()).getKey(),(result.get()).getValue()));
                     
                     System.out.println("test 1");
+                   
+                    List<Visiteur>visiteurs = new ArrayList<Visiteur>();
+                    visiteurs = ModeleGsbRv.getVisiteurs();
+                    for(Visiteur unv:visiteurs){
+                        System.out.println(unv);
+                    }
                     
                     if(Session.getSession().getLeVisiteur() != null ){
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -184,7 +194,7 @@ public class Appli extends Application {
             
             if(Session.getSession().getLeVisiteur() != null ){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText("Vous êtes déconnecter avec Succés");
+                alert.setHeaderText("Vous allez être déconnecter");
                 alert.setContentText("Déconnecté  vous " + Session.getSession().getLeVisiteur().getNom());
                 Optional<ButtonType> resultat = alert.showAndWait();
                 
@@ -208,11 +218,22 @@ public class Appli extends Application {
          });
       
         itemConsulter.setOnAction((ActionEvent event) ->{
+            try {
+                List<Visiteur> visiteurs = ModeleGsbRv.getVisiteurs();
+                for(Visiteur unV: visiteurs){
+                    System.out.println(unV);
+                }
+                
+            } 
+            catch (ConnexionException ex) {
+                Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);
+            }
             System.out.println("'[Rapports]'"+Session.getSession().getLeVisiteur().getPrenom()+' '+Session.getSession().getLeVisiteur().getNom() );
         });
         
         
         itemHesitant.setOnAction((ActionEvent event) ->{
+            
             
             praticien.rafraichir();
             try{

@@ -5,7 +5,10 @@
  */
 package fr.gsb.rv.dr.utilitaires;
 
+import fr.gsb.rv.dr.entites.Visiteur;
+import fr.gsb.rv.dr.technique.Mois;
 import javafx.geometry.Insets;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -18,6 +21,9 @@ import javafx.scene.text.Text;
  */
 public class PanneauRapports extends Pane {
     
+    private ComboBox<Visiteur> cbVisiteur;
+    private ComboBox<Mois> cbMois;
+    private ComboBox<Integer> cbAnnee;
     private GridPane vueRapports;
     private VBox vbox;
     
@@ -46,6 +52,8 @@ public class PanneauRapports extends Pane {
     }
     
     
-
+    public void rafraichir(){
+        
+    }
     
 }

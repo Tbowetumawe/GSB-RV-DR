@@ -20,6 +20,8 @@ public class RapportVisite {
     private String motif;
     private int coefConfiance;
     private boolean lu;
+    private Praticien lePraticien;
+    private Visiteur leVisiteur;
     
     public RapportVisite(int numero, LocalDate dataRedaction, LocalDate dateVisite, String bilan, String motif, int coefConfiance, boolean lu) {
         this.numero = numero;
@@ -90,6 +92,25 @@ public class RapportVisite {
     public void setLu(boolean lu) {
         this.lu = lu;
     }
+
+    public Praticien getLePraticien() {
+        return lePraticien;
+    }
+
+    public void setLePraticien(Praticien lePraticien) {
+        this.lePraticien = lePraticien;
+    }
+
+    public Visiteur getLeVisiteur() {
+        return leVisiteur;
+    }
+    
+    
+
+    public void setLeVisiteur(Visiteur leVisiteur) {
+        this.leVisiteur = leVisiteur;
+    }
+    
     
     
     
