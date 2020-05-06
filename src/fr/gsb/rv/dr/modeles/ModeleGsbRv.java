@@ -50,42 +50,52 @@ public class ModeleGsbRv {
             return null ;
         } 
     }
-    
     public static List<Praticien> getPraticiensHesitants() throws ConnexionException{
-        Connection connexion = ConnexionBD.getConnexion();
+        
+        Connection connexion = ConnexionBD.getConnexion() ;
+        
         List<Praticien> praticiens = new ArrayList<Praticien>();
-        String requete = "select p.pra_num,p.pra_nom,p.pra_ville,p.pra_coefnotoriete,max(rv.rap_date_visite) as date,rv.rap_coefConfiance"
-                + "from Praticien p"
-                + "inner join RapportVisite rv"
-                + "on p.pra_num = rv.pra_num"
+        
+        String requete = "select p.pra_num,p.pra_nom,p.pra_ville,p.pra_coefnotoriete,max(r.rap_date_visite) as date,r.rap_coefConfiance " 
+                + "from Praticien p "
+                + "inner join RapportVisite r "
+                + "on p.pra_num = r.pra_num "
                 + "group by p.pra_num";
+
+        
         try {
-            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement(requete);
-            ResultSet resultat = requetePreparee.executeQuery();
-            if(resultat.next()){
-                do{
-                    Praticien praticien = new Praticien();
-                    praticien.setNumero(resultat.getString("pra_num"));
-                    praticien.setNom(resultat.getString("pra_nom"));
-                    praticien.setVille(resultat.getString("pra_ville"));
-                    praticien.setCoefNotoriete(Float.valueOf(resultat.getString("pra_coefnotoriete")));
-                    praticien.setDateDernierVisite(Date.valueOf(resultat.getString("date")).toLocalDate());
-                    praticien.setDernierCoefConfiance(Integer.valueOf(resultat.getString("rap_coefConfiance")));
-                    
-                    praticiens.add(praticien);
-                }
-                while(resultat.next()== true);
-                requetePreparee.close();
-                return praticiens;
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement( requete ) ;
+
+            ResultSet resultat = requetePreparee.executeQuery() ;
+            
+            if( resultat.next() ){
+               do{
+                Praticien praticien = new Praticien() ;
+                praticien.setNumero(resultat.getString("pra_num") );
+                praticien.setNom(resultat.getString("pra_nom") );
+                praticien.setVille(resultat.getString("pra_ville") );
+                praticien.setCoefNotoriete(Float.valueOf(resultat.getString("pra_coefnotoriete")) );                
+                praticien.setDateDernierVisite(Date.valueOf(resultat.getString("date")).toLocalDate());
+                praticien.setDernierCoefConfiance(Integer.valueOf(resultat.getString("rap_coefConfiance")));
+                
+                
+                praticiens.add(praticien);
+               }while(resultat.next() == true);
+               requetePreparee.close() ;
+               return praticiens;
+                
             }
             else {
-                return null;
+                return null ;
             }
+            
         }
         catch( Exception e ){
-            return null;
-        }
+            return null ;
+        } 
     }
+    
+    
     
     
     public static List<Visiteur> getVisiteurs() throws ConnexionException{
