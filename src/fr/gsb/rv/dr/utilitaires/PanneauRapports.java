@@ -5,6 +5,8 @@
  */
 package fr.gsb.rv.dr.utilitaires;
 
+import fr.gsb.rv.dr.entites.Praticien;
+import fr.gsb.rv.dr.entites.RapportVisite;
 import fr.gsb.rv.dr.entites.Visiteur;
 import fr.gsb.rv.dr.modeles.ModeleGsbRv;
 import fr.gsb.rv.dr.technique.ConnexionException;
@@ -23,6 +25,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -55,11 +58,17 @@ public class PanneauRapports extends Pane {
         vbox.setPadding(new Insets(15, 12, 15, 12));
         vbox.setSpacing(10); 
         
-        Text title = new Text("Accueil");
+        Text title = new Text("Rapports");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         vbox.getChildren().add(title);
         vbox.setStyle("-fx-background-color: white;");
         vueRapports.add(vbox, 1, 0);
+        
+        TableColumn <RapportVisite, Integer> colNumero = new TableColumn<RapportVisite, Integer>("Numéro");
+        TableColumn <RapportVisite, Praticien> colNom = new TableColumn<RapportVisite, Praticien>("Nom");
+        TableColumn <RapportVisite, Praticien> colVille = new TableColumn<RapportVisite, Praticien>("Ville");
+        TableColumn <RapportVisite, LocalDate> colDateVisite =new TableColumn<RapportVisite, LocalDate>("Date Visite");
+        TableColumn <RapportVisite, LocalDate> colDateRedac =new TableColumn<RapportVisite, LocalDate>("Date Redaction");
         
         try {
             List<Visiteur> visiteurs = ModeleGsbRv.getVisiteurs();
@@ -115,6 +124,8 @@ public class PanneauRapports extends Pane {
         
     
     }
+    
+    
 
     public GridPane getVueRapports() {
         return vueRapports;

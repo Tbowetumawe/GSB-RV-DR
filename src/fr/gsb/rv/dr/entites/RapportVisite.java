@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class RapportVisite {
 
     private int numero;
-    private LocalDate dataRedaction;
+    private LocalDate dateRedaction;
     private LocalDate dateVisite;
     private String bilan;
     private String motif;
@@ -23,9 +23,9 @@ public class RapportVisite {
     private Praticien lePraticien;
     private Visiteur leVisiteur;
     
-    public RapportVisite(int numero, LocalDate dataRedaction, LocalDate dateVisite, String bilan, String motif, int coefConfiance, boolean lu) {
+    public RapportVisite(int numero, LocalDate dateRedaction, LocalDate dateVisite, String bilan, String motif, int coefConfiance, boolean lu) {
         this.numero = numero;
-        this.dataRedaction = dataRedaction;
+        this.dateRedaction = dateRedaction;
         this.dateVisite = dateVisite;
         this.bilan = bilan;
         this.motif = motif;
@@ -45,12 +45,12 @@ public class RapportVisite {
         this.numero = numero;
     }
 
-    public LocalDate getDataRedaction() {
-        return dataRedaction;
+    public LocalDate getDateRedaction() {
+        return dateRedaction;
     }
 
-    public void setDataRedaction(LocalDate dataRedaction) {
-        this.dataRedaction = dataRedaction;
+    public void setDateRedaction(LocalDate dataRedaction) {
+        this.dateRedaction = dataRedaction;
     }
 
     public LocalDate getDateVisite() {

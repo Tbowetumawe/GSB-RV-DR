@@ -157,7 +157,7 @@ public class ModeleGsbRv {
                rpVisite.setDateVisite(Date.valueOf(result.getString("rap_date_visite")).toLocalDate());
                rpVisite.setBilan(result.getString("rap_bilan"));
                rpVisite.setCoefConfiance(Integer.valueOf(result.getString("rap_coeConfiance")));
-               rpVisite.setDataRedaction(Date.valueOf(result.getString("rap_date_redaction")).toLocalDate());
+               rpVisite.setDateRedaction(Date.valueOf(result.getString("rap_date_redaction")).toLocalDate());
                rpVisite.setMotif(result.getString("mot_id"));
                rpVisite.setLu(result.getBoolean("rap_lu"));
                RVisite.add(rpVisite);
