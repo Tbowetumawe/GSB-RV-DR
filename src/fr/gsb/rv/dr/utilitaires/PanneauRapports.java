@@ -91,10 +91,7 @@ public class PanneauRapports extends Pane {
             return new SimpleStringProperty(ville);            
         }
         );
-        colVille.setCellValueFactory((CellDataFeatures<RapportVisite,String> param) -> {
-            String ville = param.getValue().getLePraticien().getVille();
-            return new SimpleStringProperty(ville);
-        });
+        
             
         colDateVisite.setCellValueFactory(new PropertyValueFactory<>("dateVisite"));
         colDateRedac.setCellValueFactory(new PropertyValueFactory<>("dateRedaction"));
