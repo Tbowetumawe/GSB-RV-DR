@@ -49,7 +49,7 @@ public class Visiteur {
 
     @Override
     public String toString() {
-        return "Visiteur{" + "matricule=" + matricule + ", nom=" + nom + ", prenom=" + prenom + '}';
+        return "Visiteur{" + nom + " " + prenom + " (" + matricule +")"+'}';
     }
 
     

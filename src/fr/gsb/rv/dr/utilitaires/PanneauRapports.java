@@ -5,7 +5,22 @@
  */
 package fr.gsb.rv.dr.utilitaires;
 
+import fr.gsb.rv.dr.entites.Visiteur;
+import fr.gsb.rv.dr.modeles.ModeleGsbRv;
+import fr.gsb.rv.dr.technique.ConnexionException;
+import fr.gsb.rv.dr.technique.Mois;
+import java.time.LocalDate;
+import java.time.temporal.ValueRange;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -18,8 +33,12 @@ import javafx.scene.text.Text;
  */
 public class PanneauRapports extends Pane {
     
+    private ComboBox<Visiteur> cbVisiteur;
+    private ComboBox<Mois> cbMois;
+    private ComboBox<Integer> cbAnnee;
     private GridPane vueRapports;
     private VBox vbox;
+    private TableView<Visiteur> table = new TableView<Visiteur>();
     
     
     public PanneauRapports(){
@@ -38,6 +57,35 @@ public class PanneauRapports extends Pane {
         vbox.getChildren().add(title);
         vbox.setStyle("-fx-background-color: white;");
         vueRapports.add(vbox, 1, 0);
+        
+        try {
+            List<Visiteur> visiteurs = ModeleGsbRv.getVisiteurs();
+            ObservableList<Visiteur> list;
+            list= FXCollections.observableArrayList(visiteurs);
+            cbVisiteur.setItems(list);
+   
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        for(Mois unMois : Mois.values()){
+                ObservableList<Mois> liste;
+                liste= FXCollections.observableArrayList(unMois);
+                cbMois.setItems(liste);
+        }
+        List<Integer> years = new ArrayList<>();
+        LocalDate aujourdhui =LocalDate.now();
+        int anneeCourant = aujourdhui.getYear();
+        int start = anneeCourant-6;
+        //ValueRange range = ValueRange.of(start, anneeCourant);
+        for (int i = start; i < anneeCourant; i++) {
+            years.add(i);
+        }
+    
+        ObservableList<Integer> listAnnee;
+        years= FXCollections.observableArrayList(anneeCourant);
+        
     
     }
 
@@ -46,6 +94,9 @@ public class PanneauRapports extends Pane {
     }
     
     
-
+    
+    public void rafraichir(){
+        
+    }
     
 }
