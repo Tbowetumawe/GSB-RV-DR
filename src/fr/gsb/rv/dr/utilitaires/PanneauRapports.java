@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,11 +28,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 
 
 /**
@@ -69,6 +74,30 @@ public class PanneauRapports extends Pane {
         TableColumn <RapportVisite, Praticien> colVille = new TableColumn<RapportVisite, Praticien>("Ville");
         TableColumn <RapportVisite, LocalDate> colDateVisite =new TableColumn<RapportVisite, LocalDate>("Date Visite");
         TableColumn <RapportVisite, LocalDate> colDateRedac =new TableColumn<RapportVisite, LocalDate>("Date Redaction");
+        
+        colNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
+        
+        colNom.setCellValueFactory(
+                param ->{        
+                    String nom = param.getValue().getLePraticien().getNom();
+                    return new SimpleStringProperty(nom);
+                    
+                }
+            );
+        
+        colVille.setCellValueFactory((CellDataFeatures<RapportVisite, String>)param ->{
+            
+            String ville = param.getValue().getLePraticien().getVille();
+            return new SimpleStringProperty(ville);            
+        }
+        );
+        colVille.setCellValueFactory((CellDataFeatures<RapportVisite,String> param) -> {
+            String ville = param.getValue().getLePraticien().getVille();
+            return new SimpleStringProperty(ville);
+        });
+            
+        colDateVisite.setCellValueFactory(new PropertyValueFactory<>("dateVisite"));
+        colDateRedac.setCellValueFactory(new PropertyValueFactory<>("dateRedaction"));
         
         try {
             List<Visiteur> visiteurs = ModeleGsbRv.getVisiteurs();
