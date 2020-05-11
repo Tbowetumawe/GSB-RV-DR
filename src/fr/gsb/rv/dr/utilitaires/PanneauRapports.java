@@ -18,7 +18,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.*;
@@ -74,17 +77,41 @@ public class PanneauRapports extends Pane {
                 liste= FXCollections.observableArrayList(unMois);
                 cbMois.setItems(liste);
         }
-        List<Integer> years = new ArrayList<>();
-        LocalDate aujourdhui =LocalDate.now();
+        
+    
+    
+    LocalDate aujourdhui =LocalDate.now();
         int anneeCourant = aujourdhui.getYear();
         int start = anneeCourant-6;
         //ValueRange range = ValueRange.of(start, anneeCourant);
         for (int i = start; i < anneeCourant; i++) {
-            years.add(i);
+            ObservableList<Integer> listAnnee = null;
+            listAnnee.add(i);
+            listAnnee = FXCollections.observableArrayList(anneeCourant);
+            cbAnnee.setItems(listAnnee);
         }
-    
-        ObservableList<Integer> listAnnee;
-        years= FXCollections.observableArrayList(anneeCourant);
+        
+        Button btnValider = new Button();
+        btnValider.setOnAction((ActionEvent e)->{
+            if(cbVisiteur.getValue()!= null && cbMois.getValue()!= null && cbAnnee.getValue() != null){
+                rafraichir();
+            }
+            
+            else if(cbVisiteur.getValue()== null && cbMois.getValue()!= null && cbAnnee.getValue() != null){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Seclectionner toutes les champs");
+                alert.setContentText("Le visiteur ou le mois ou l'année n'est pas seclectionné " );
+                alert.showAndWait();
+            }
+            
+            else{
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Seclectionner toutes les champs");
+                alert.setContentText("Le visiteur ou le mois ou l'année n'est pas seclectionné");
+                alert.showAndWait();   
+            }
+        });
+        
         
     
     }
@@ -97,6 +124,10 @@ public class PanneauRapports extends Pane {
     
     public void rafraichir(){
         
+        System.out.println(cbVisiteur.getValue()+" mois "+ cbMois.getValue() + " année " + cbAnnee.getValue());
+        
     }
+    
+
     
 }
