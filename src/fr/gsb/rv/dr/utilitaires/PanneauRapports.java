@@ -12,6 +12,7 @@ import fr.gsb.rv.dr.modeles.ModeleGsbRv;
 import fr.gsb.rv.dr.technique.ConnexionException;
 import fr.gsb.rv.dr.technique.Mois;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ValueRange;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,15 +28,19 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.*;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
+import javax.swing.text.TableView.TableRow;
 
 
 /**
@@ -49,7 +54,7 @@ public class PanneauRapports extends Pane {
     private ComboBox<Integer> cbAnnee;
     private GridPane vueRapports;
     private VBox vbox;
-    private TableView<Visiteur> table = new TableView<Visiteur>();
+    private TableView<Visiteur> tabRapports = new TableView<Visiteur>();
     
     
     public PanneauRapports(){
@@ -85,7 +90,7 @@ public class PanneauRapports extends Pane {
                 }
             );
         
-        colVille.setCellValueFactory((CellDataFeatures<RapportVisite, String>)param ->{
+         colVille.setCellValueFactory((CellDataFeatures<RapportVisite, String>)param ->{
             
             String ville = param.getValue().getLePraticien().getVille();
             return new SimpleStringProperty(ville);            
@@ -95,6 +100,72 @@ public class PanneauRapports extends Pane {
             
         colDateVisite.setCellValueFactory(new PropertyValueFactory<>("dateVisite"));
         colDateRedac.setCellValueFactory(new PropertyValueFactory<>("dateRedaction"));
+        
+        //modification du format d'affichage de la collone date visite et date redac'
+        colDateVisite.setCellFactory(
+            colonne -> {
+                return new TableCell<RapportVisite, LocalDate>(){
+                    protected void updateItem(LocalDate item, Boolean empty){
+                        super.updateItem( item, empty);
+                        if( empty){
+                            setText("");
+                        }
+                        else{
+                            DateTimeFormatter formateur = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+                            setText( item.format(formateur));
+                        }
+                    }
+                };
+            }
+        );
+        
+        colDateRedac.setCellFactory(
+            colonne -> {
+                return new TableCell<RapportVisite, LocalDate>(){
+                    protected void updateItem(LocalDate item, Boolean empty){
+                        super.updateItem( item, empty);
+                        if( empty){
+                            setText("");
+                        }
+                        else{
+                            DateTimeFormatter formateur = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+                            setText( item.format(formateur));
+                        }
+                    }
+                };
+            }
+        );
+        
+        //application du font en fonctionde l'etat de lecture
+        tabRapports.setRowFactory(
+            ligne -> {
+            return new TableRow<RapportVisite>(){
+                    
+                    protected void updateItem( RapportVisite item, boolean empty ){
+                        super.updateItem(item, empty);
+                        if( item != null ){
+                            if( item.isLu()){
+                                setStyle( "-fx-background-color: gold");
+                            }
+                            else{
+                                setStyle( "-fx-baclground-color: cyan");
+                            }
+                        }
+                    }
+                };
+            }
+        );
+        
+        // traitement section d'une ligne 
+        
+        tabRapports.setOnMouseClicked(
+                (MouseEvent event)-> {
+                    if( event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2){
+                        tabRapports
+                    }
+                }
+        );
+        
         
         try {
             List<Visiteur> visiteurs = ModeleGsbRv.getVisiteurs();
