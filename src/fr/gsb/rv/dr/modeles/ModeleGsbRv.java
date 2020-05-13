@@ -171,7 +171,7 @@ public class ModeleGsbRv {
     }
   
     
-    public RapportVisite setRapportVisiteLu(String matricule, int numero)throws ConnexionException{
+    public static void setRapportVisiteLu(String matricule, int numero)throws ConnexionException{
         Connection connexion = ConnexionBD.getConnexion();
         
         String req = "UPDATE RapportVisite"
@@ -189,9 +189,9 @@ public class ModeleGsbRv {
         }
         
         catch (Exception e) {
-            return null;
+            System.out.println(e);
         } 
-       return null; 
+        
     }   
     
 }

@@ -54,7 +54,7 @@ public class PanneauRapports extends Pane {
     private ComboBox<Integer> cbAnnee;
     private GridPane vueRapports;
     private VBox vbox;
-    private TableView<Visiteur> tabRapports = new TableView<Visiteur>();
+    private TableView<RapportVisite> tabRapports = new TableView<RapportVisite>();
     
     
     public PanneauRapports(){
@@ -73,99 +73,6 @@ public class PanneauRapports extends Pane {
         vbox.getChildren().add(title);
         vbox.setStyle("-fx-background-color: white;");
         vueRapports.add(vbox, 1, 0);
-        
-        TableColumn <RapportVisite, Integer> colNumero = new TableColumn<RapportVisite, Integer>("Numéro");
-        TableColumn <RapportVisite, Praticien> colNom = new TableColumn<RapportVisite, Praticien>("Nom");
-        TableColumn <RapportVisite, Praticien> colVille = new TableColumn<RapportVisite, Praticien>("Ville");
-        TableColumn <RapportVisite, LocalDate> colDateVisite =new TableColumn<RapportVisite, LocalDate>("Date Visite");
-        TableColumn <RapportVisite, LocalDate> colDateRedac =new TableColumn<RapportVisite, LocalDate>("Date Redaction");
-        
-        colNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
-        
-        colNom.setCellValueFactory(
-                param ->{        
-                    String nom = param.getValue().getLePraticien().getNom();
-                    return new SimpleStringProperty(nom);
-                    
-                }
-            );
-        
-         colVille.setCellValueFactory((CellDataFeatures<RapportVisite, String>)param ->{
-            
-            String ville = param.getValue().getLePraticien().getVille();
-            return new SimpleStringProperty(ville);            
-        }
-        );
-        
-            
-        colDateVisite.setCellValueFactory(new PropertyValueFactory<>("dateVisite"));
-        colDateRedac.setCellValueFactory(new PropertyValueFactory<>("dateRedaction"));
-        
-        //modification du format d'affichage de la collone date visite et date redac'
-        colDateVisite.setCellFactory(
-            colonne -> {
-                return new TableCell<RapportVisite, LocalDate>(){
-                    protected void updateItem(LocalDate item, Boolean empty){
-                        super.updateItem( item, empty);
-                        if( empty){
-                            setText("");
-                        }
-                        else{
-                            DateTimeFormatter formateur = DateTimeFormatter.ofPattern("dd/MM/uuuu");
-                            setText( item.format(formateur));
-                        }
-                    }
-                };
-            }
-        );
-        
-        colDateRedac.setCellFactory(
-            colonne -> {
-                return new TableCell<RapportVisite, LocalDate>(){
-                    protected void updateItem(LocalDate item, Boolean empty){
-                        super.updateItem( item, empty);
-                        if( empty){
-                            setText("");
-                        }
-                        else{
-                            DateTimeFormatter formateur = DateTimeFormatter.ofPattern("dd/MM/uuuu");
-                            setText( item.format(formateur));
-                        }
-                    }
-                };
-            }
-        );
-        
-        //application du font en fonctionde l'etat de lecture
-        tabRapports.setRowFactory(
-            ligne -> {
-            return new TableRow<RapportVisite>(){
-                    
-                    protected void updateItem( RapportVisite item, boolean empty ){
-                        super.updateItem(item, empty);
-                        if( item != null ){
-                            if( item.isLu()){
-                                setStyle( "-fx-background-color: gold");
-                            }
-                            else{
-                                setStyle( "-fx-baclground-color: cyan");
-                            }
-                        }
-                    }
-                };
-            }
-        );
-        
-        // traitement section d'une ligne 
-        
-        tabRapports.setOnMouseClicked(
-                (MouseEvent event)-> {
-                    if( event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2){
-                        tabRapports
-                    }
-                }
-        );
-        
         
         try {
             List<Visiteur> visiteurs = ModeleGsbRv.getVisiteurs();
@@ -186,7 +93,7 @@ public class PanneauRapports extends Pane {
         
     
     
-    LocalDate aujourdhui =LocalDate.now();
+        LocalDate aujourdhui =LocalDate.now();
         int anneeCourant = aujourdhui.getYear();
         int start = anneeCourant-6;
         //ValueRange range = ValueRange.of(start, anneeCourant);
@@ -217,6 +124,125 @@ public class PanneauRapports extends Pane {
                 alert.showAndWait();   
             }
         });
+        
+        
+        
+        TableColumn <RapportVisite, Integer> colNumero = new TableColumn<RapportVisite, Integer>("Numéro");
+        TableColumn <RapportVisite, String> colNom = new TableColumn<RapportVisite, String>("Nom");
+        TableColumn <RapportVisite, String> colVille = new TableColumn<RapportVisite, String>("Ville");
+        TableColumn <RapportVisite, LocalDate> colDateVisite = new TableColumn<RapportVisite, LocalDate>("Date Visite");
+        TableColumn <RapportVisite, LocalDate> colDateRedac = new TableColumn<RapportVisite, LocalDate>("Date Redaction");
+        
+        colNumero.setCellValueFactory(new PropertyValueFactory<>("numero"));
+        tabRapports.getColumns().add(colNumero);
+        
+        colNom.setCellValueFactory( param ->{
+            String nom = param.getValue().getLePraticien().getNom();
+            return new SimpleStringProperty(nom);
+        }
+        );
+        tabRapports.getColumns().add(colNom);
+        
+         colVille.setCellValueFactory(param ->{
+            String ville = param.getValue().getLePraticien().getVille();
+            return new SimpleStringProperty(ville);            
+        }
+        );
+        tabRapports.getColumns().add(colVille);
+            
+        colDateVisite.setCellValueFactory(new PropertyValueFactory<>("dateVisite"));
+        tabRapports.getColumns().add(colDateVisite);
+        
+        colDateRedac.setCellValueFactory(new PropertyValueFactory<>("dateRedaction"));
+        tabRapports.getColumns().add(colDateRedac);
+        
+        //modification du format d'affichage de la collone date visite et date redac'
+        
+        colDateVisite.setCellFactory(
+            colonne -> {
+                return new TableCell<RapportVisite, LocalDate>(){
+                    protected void updateItem(LocalDate item, Boolean empty){
+                        super.updateItem( item, empty);
+                        if( empty){
+                            setText("");
+                        }
+                        else{
+                            DateTimeFormatter formateur = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+                            setText( item.format(formateur));
+                        }
+                    }
+                };
+            }
+        );
+        
+        
+        colDateRedac.setCellFactory(
+            colonne -> {
+                return new TableCell<RapportVisite, LocalDate>(){
+                    protected void updateItem(LocalDate item, Boolean empty){
+                        super.updateItem( item, empty);
+                        if( empty){
+                            setText("");
+                        }
+                        else{
+                            DateTimeFormatter formateur = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+                            setText( item.format(formateur));
+                        }
+                    }
+                };
+            }
+        );
+        
+        //application du font en fonctionde l'etat de lecture
+        
+       /* tabRapports.setRowFactory(
+            ligne -> {
+            return new TableRow<RapportVisite>(){
+                    
+                protected void updateItem( RapportVisite item, boolean empty ){
+                    super.updateItem(item, empty);
+                    
+                    if( item != null ){
+                        if( item.isLu()){
+                            setStyle( "-fx-background-color: gold");
+                        }
+                        else{
+                            setStyle( "-fx-baclground-color: cyan");
+                        }
+                    }
+                }
+                };
+            }
+        );
+        */
+       
+        // traitement section d'une ligne 
+        
+        tabRapports.setOnMouseClicked(
+            (MouseEvent event)-> {
+                if( event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2){
+                    int indiceRapport = tabRapports.getSelectionModel().getSelectedIndex();
+                    
+                    ObservableList<RapportVisite> rows = tabRapports.getSelectionModel().getSelectedItems();
+                    rows.get(indiceRapport).isLu();
+                    RapportVisite rapportv = new RapportVisite();
+                    
+                    try{
+                        ModeleGsbRv.setRapportVisiteLu(rapportv.getLeVisiteur().getMatricule(), rapportv.getNumero());
+                    }
+                    catch (Exception e) {
+                        System.out.println(e);
+                    }
+                    
+                    rafraichir();
+                    
+                
+                }
+            }
+        );
+        
+        
+        
         
         
     
