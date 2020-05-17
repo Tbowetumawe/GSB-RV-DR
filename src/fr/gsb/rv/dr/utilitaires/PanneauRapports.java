@@ -73,15 +73,16 @@ public class PanneauRapports extends Pane {
         vbox.getChildren().add(title);
         vbox.setStyle("-fx-background-color: white;");
         
-        vueRapports.add(vbox, 1, 0);
+        
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
         
         Button btnValider = new Button();
         
-        hbox.getChildren().addAll(cbVisiteur, cbMois, cbAnnee, btnValider );
-        vbox.getChildren().add(hbox);
+        hbox.getChildren().addAll(cbVisiteur,cbMois,cbAnnee);
+        vbox.getChildren().addAll(hbox, btnValider);
+        
         
         try {
             List<Visiteur> visiteurs = ModeleGsbRv.getVisiteurs();
@@ -249,7 +250,7 @@ public class PanneauRapports extends Pane {
                 }
             }
         );
-             
+        vueRapports.add(vbox, 1, 0);     
     }
     
     
