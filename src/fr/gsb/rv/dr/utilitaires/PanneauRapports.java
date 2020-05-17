@@ -72,7 +72,16 @@ public class PanneauRapports extends Pane {
         title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         vbox.getChildren().add(title);
         vbox.setStyle("-fx-background-color: white;");
+        
         vueRapports.add(vbox, 1, 0);
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15, 12, 15, 12));
+        hbox.setSpacing(10);
+        
+        Button btnValider = new Button();
+        
+        hbox.getChildren().addAll(cbVisiteur, cbMois, cbAnnee, btnValider );
+        vbox.getChildren().add(hbox);
         
         try {
             List<Visiteur> visiteurs = ModeleGsbRv.getVisiteurs();
@@ -86,10 +95,10 @@ public class PanneauRapports extends Pane {
         }
         
         for(Mois unMois : Mois.values()){
-                ObservableList<Mois> liste;
-                liste= FXCollections.observableArrayList(unMois);
-                cbMois.setItems(liste);}
-        
+            ObservableList<Mois> liste;
+            liste= FXCollections.observableArrayList(unMois);
+            cbMois.setItems(liste);
+        } 
     
     
         LocalDate aujourdhui = LocalDate.now();
@@ -103,7 +112,7 @@ public class PanneauRapports extends Pane {
             cbAnnee.setItems(listAnnee);
         }
         
-        Button btnValider = new Button();
+        
         
         btnValider.setOnAction((ActionEvent e)->{
             if(cbVisiteur.getValue()!= null && cbMois.getValue()!= null && cbAnnee.getValue() != null){

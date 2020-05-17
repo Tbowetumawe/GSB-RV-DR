@@ -6,6 +6,7 @@
 package fr.gsb.rv.dr;
 
 import fr.gsb.rv.dr.entites.Praticien;
+import fr.gsb.rv.dr.entites.RapportVisite;
 import fr.gsb.rv.dr.entites.Visiteur;
 import fr.gsb.rv.dr.modeles.ModeleGsbRv;
 import fr.gsb.rv.dr.technique.ConnexionException;
@@ -76,11 +77,11 @@ public class Appli extends Application {
         Visiteur visiteur;
     
         PanneauPraticiens praticien = new PanneauPraticiens();
-        //PanneauRapports rapport = new PanneauRapports();
+        PanneauRapports rapport = new PanneauRapports();
         PanneauAccueil accueil = new PanneauAccueil();
 
         GridPane vuepraticien = praticien.getVuePraticien();
-        //GridPane vueRapport = rapport.getVueRapports();
+        GridPane vueRapport = rapport.getVueRapports();
         GridPane vueAccueil = accueil.getVueAccueil();
         
         StackPane stackPane = new StackPane();
@@ -152,6 +153,13 @@ public class Appli extends Application {
                     visiteurs = ModeleGsbRv.getVisiteurs();
                     for(Visiteur unv:visiteurs){
                         System.out.println(unv);
+                    }
+                    
+                    RapportVisite rpV = new RapportVisite();
+                    List<RapportVisite> RVisite = new ArrayList<RapportVisite>();
+                    RVisite = ModeleGsbRv.getRapportVisite(rpV.getLeVisiteur().getMatricule(), rpV.getDateRedaction().getMonthValue(), rpV.getDateRedaction().getYear());
+                    for(RapportVisite rp : RVisite){
+                        System.out.println(rp);
                     }
                     
                     if(Session.getSession().getLeVisiteur() != null ){
