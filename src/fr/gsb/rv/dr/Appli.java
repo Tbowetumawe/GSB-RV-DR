@@ -76,11 +76,11 @@ public class Appli extends Application {
         Visiteur visiteur;
     
         PanneauPraticiens praticien = new PanneauPraticiens();
-        PanneauRapports rapport = new PanneauRapports();
+        //PanneauRapports rapport = new PanneauRapports();
         PanneauAccueil accueil = new PanneauAccueil();
 
         GridPane vuepraticien = praticien.getVuePraticien();
-        GridPane vueRapport = rapport.getVueRapports();
+        //GridPane vueRapport = rapport.getVueRapports();
         GridPane vueAccueil = accueil.getVueAccueil();
         
         StackPane stackPane = new StackPane();

@@ -88,12 +88,11 @@ public class PanneauRapports extends Pane {
         for(Mois unMois : Mois.values()){
                 ObservableList<Mois> liste;
                 liste= FXCollections.observableArrayList(unMois);
-                cbMois.setItems(liste);
-        }
+                cbMois.setItems(liste);}
         
     
     
-        LocalDate aujourdhui =LocalDate.now();
+        LocalDate aujourdhui = LocalDate.now();
         int anneeCourant = aujourdhui.getYear();
         int start = anneeCourant-6;
         //ValueRange range = ValueRange.of(start, anneeCourant);
@@ -105,6 +104,7 @@ public class PanneauRapports extends Pane {
         }
         
         Button btnValider = new Button();
+        
         btnValider.setOnAction((ActionEvent e)->{
             if(cbVisiteur.getValue()!= null && cbMois.getValue()!= null && cbAnnee.getValue() != null){
                 rafraichir();
@@ -125,7 +125,7 @@ public class PanneauRapports extends Pane {
             }
         });
         
-        
+        vbox.getChildren().add(tabRapports);
         
         TableColumn <RapportVisite, Integer> colNumero = new TableColumn<RapportVisite, Integer>("Numéro");
         TableColumn <RapportVisite, String> colNom = new TableColumn<RapportVisite, String>("Nom");
@@ -240,12 +240,7 @@ public class PanneauRapports extends Pane {
                 }
             }
         );
-        
-        
-        
-        
-        
-    
+             
     }
     
     
@@ -257,8 +252,17 @@ public class PanneauRapports extends Pane {
     
     
     public void rafraichir(){
-        
-        System.out.println(cbVisiteur.getValue()+" mois "+ cbMois.getValue() + " année " + cbAnnee.getValue());
+        try {
+            RapportVisite rpV = new RapportVisite();
+            List<RapportVisite> rapportdeViste = new ArrayList<RapportVisite>();
+            rapportdeViste = ModeleGsbRv.getRapportVisite(rpV.getLeVisiteur().getMatricule(), rpV.getDateRedaction().getMonthValue(), rpV.getDateRedaction().getYear());
+            
+            ObservableList<RapportVisite> obList = FXCollections.observableList(rapportdeViste);
+            tabRapports.setItems(obList);
+        } 
+        catch (Exception e) {
+            System.out.println(e);
+        }
         
     }
     
