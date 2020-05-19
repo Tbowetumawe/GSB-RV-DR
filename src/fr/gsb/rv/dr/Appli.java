@@ -13,6 +13,7 @@ import fr.gsb.rv.dr.technique.ConnexionException;
 import fr.gsb.rv.dr.technique.Session;
 import fr.gsb.rv.dr.utilitaires.*;
 import fr.gsb.rv.dr.vue.VueConnexion;
+import fr.gsb.rv.dr.vue.VueRapport;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -90,7 +91,7 @@ public class Appli extends Application {
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
         
-        stackPane.getChildren().addAll(vuepraticien,vueAccueil);
+        stackPane.getChildren().addAll(vuepraticien,vueAccueil,vueRapport);
         stackPane.setPrefSize(300, 150);
     
   //creation du barre de menu
@@ -184,7 +185,7 @@ public class Appli extends Application {
                             alert.showAndWait();
                             Optional<Pair<String, String>> result1 = vue.getDialog().showAndWait();
                             System.out.println(result1);
-                            changeTop(vueAccueil);
+                            //changeTop(vueAccueil);
                             Session.ouvrir(ModeleGsbRv.seConnecter((result1.get()).getKey(),(result1.get()).getValue()));       
                         
                     }
@@ -226,17 +227,28 @@ public class Appli extends Application {
          });
       
         itemConsulter.setOnAction((ActionEvent event) ->{
-            try {
+            
+            /*try {
                 List<Visiteur> visiteurs = ModeleGsbRv.getVisiteurs();
                 for(Visiteur unV: visiteurs){
                     System.out.println(unV);
-                }
-                
+                }      
             } 
-            catch (ConnexionException ex) {
-                Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);
+            catch (Exception e) {
+                System.out.println(e);
+            }*/
+            try{
+                changeTop(vueAccueil);
+                VueRapport vue = new VueRapport();
+                Optional<String> result = vue.getDialog().showAndWait();
+                
             }
-            System.out.println("'[Rapports]'"+Session.getSession().getLeVisiteur().getPrenom()+' '+Session.getSession().getLeVisiteur().getNom() );
+            catch(Exception e){
+                System.out.println(e);
+            }
+            
+            
+            //System.out.println("'[Rapports]'"+Session.getSession().getLeVisiteur().getPrenom()+' '+Session.getSession().getLeVisiteur().getNom() );
         });
         
         

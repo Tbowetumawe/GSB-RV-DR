@@ -49,9 +49,9 @@ import javax.swing.text.TableView.TableRow;
  */
 public class PanneauRapports extends Pane {
     
-    private ComboBox<Visiteur> cbVisiteur;
-    private ComboBox<Mois> cbMois;
-    private ComboBox<Integer> cbAnnee;
+    private ComboBox<Visiteur> cbVisiteur = new ComboBox<Visiteur>();
+    private ComboBox<Mois> cbMois = new ComboBox<Mois>();
+    private ComboBox<Integer> cbAnnee = new ComboBox<Integer>();
     private GridPane vueRapports;
     private VBox vbox;
     private TableView<RapportVisite> tabRapports = new TableView<RapportVisite>();
@@ -80,8 +80,6 @@ public class PanneauRapports extends Pane {
         
         Button btnValider = new Button();
         
-        hbox.getChildren().addAll(cbVisiteur,cbMois,cbAnnee);
-        vbox.getChildren().addAll(hbox, btnValider);
         
         
         try {
@@ -104,16 +102,21 @@ public class PanneauRapports extends Pane {
     
         LocalDate aujourdhui = LocalDate.now();
         int anneeCourant = aujourdhui.getYear();
-        int start = anneeCourant-6;
+        int start = anneeCourant;
         //ValueRange range = ValueRange.of(start, anneeCourant);
         for (int i = start; i < anneeCourant; i++) {
             ObservableList<Integer> listAnnee = null;
-            listAnnee.add(i);
+            listAnnee.addAll(anneeCourant,anneeCourant-i);
+            //listAnnee.add(i);
             listAnnee = FXCollections.observableArrayList(anneeCourant);
             cbAnnee.setItems(listAnnee);
         }
         
-        
+        hbox.getChildren().add(cbVisiteur);
+        hbox.getChildren().add(cbMois);
+        hbox.getChildren().add(cbAnnee);
+        vbox.getChildren().addAll(hbox, btnValider);
+        vbox.getChildren().add(tabRapports);
         
         btnValider.setOnAction((ActionEvent e)->{
             if(cbVisiteur.getValue()!= null && cbMois.getValue()!= null && cbAnnee.getValue() != null){
@@ -135,7 +138,7 @@ public class PanneauRapports extends Pane {
             }
         });
         
-        vbox.getChildren().add(tabRapports);
+        
         
         TableColumn <RapportVisite, Integer> colNumero = new TableColumn<RapportVisite, Integer>("Numéro");
         TableColumn <RapportVisite, String> colNom = new TableColumn<RapportVisite, String>("Nom");
