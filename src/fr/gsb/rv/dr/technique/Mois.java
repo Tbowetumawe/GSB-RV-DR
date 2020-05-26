@@ -9,7 +9,8 @@ package fr.gsb.rv.dr.technique;
  *
  * @author developpeur
  */
-public enum Mois {
+
+public enum Mois { 
     Janvier,
     Février,
     Mars,
@@ -21,7 +22,5 @@ public enum Mois {
     Septembre,
     Octobre,
     Novembre,
-    Décembre;
-    
-    
+    Décembre
 }

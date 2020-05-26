@@ -10,6 +10,7 @@ import fr.gsb.rv.dr.entites.RapportVisite;
 import fr.gsb.rv.dr.entites.Visiteur;
 import fr.gsb.rv.dr.modeles.ModeleGsbRv;
 import fr.gsb.rv.dr.technique.ConnexionException;
+import fr.gsb.rv.dr.technique.Mois;
 import fr.gsb.rv.dr.technique.Session;
 import fr.gsb.rv.dr.utilitaires.*;
 import fr.gsb.rv.dr.vue.VueConnexion;
@@ -24,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -150,18 +152,19 @@ public class Appli extends Application {
                     
                     System.out.println("test 1");
                    
-                    List<Visiteur>visiteurs = new ArrayList<Visiteur>();
+                    /*List<Visiteur>visiteurs = new ArrayList<Visiteur>();
                     visiteurs = ModeleGsbRv.getVisiteurs();
                     for(Visiteur unv:visiteurs){
                         System.out.println(unv);
-                    }
+                    }*/
                     
-                    RapportVisite rpV = new RapportVisite();
+                    /*RapportVisite rpV = new RapportVisite();
                     List<RapportVisite> RVisite = new ArrayList<RapportVisite>();
+                    System.out.println("teste 2");
                     RVisite = ModeleGsbRv.getRapportVisite(rpV.getLeVisiteur().getMatricule(), rpV.getDateRedaction().getMonthValue(), rpV.getDateRedaction().getYear());
                     for(RapportVisite rp : RVisite){
                         System.out.println(rp);
-                    }
+                    }*/
                     
                     if(Session.getSession().getLeVisiteur() != null ){
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -172,10 +175,11 @@ public class Appli extends Application {
                         itemSeConnecter.setDisable(true);
                         menuRapports.setDisable(false);
                         menuPraticiens.setDisable(false);
+                        changeTop(vueRapport);
                         System.out.println("Session Ouvert:"+Session.getSession().getLeVisiteur().toString()); 
                         praticien.setCritereTri(PanneauPraticiens.CRITERE_COEF_CONFIANCE);
                         root.setCenter(stackPane);
-                        changeTop(vueAccueil);
+                        
                     }
 
                     else {

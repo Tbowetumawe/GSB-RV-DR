@@ -78,36 +78,35 @@ public class PanneauRapports extends Pane {
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
         
-        Button btnValider = new Button();
+        Button btnValider = new Button("Valider");
         
         
-        
+        //peuplement combobox visiteur
         try {
             List<Visiteur> visiteurs = ModeleGsbRv.getVisiteurs();
             ObservableList<Visiteur> list;
             list= FXCollections.observableArrayList(visiteurs);
             cbVisiteur.setItems(list);
-   
         }
         catch (Exception e) {
             System.out.println(e);
         }
         
+        //peuplement combobox mois 
         for(Mois unMois : Mois.values()){
             ObservableList<Mois> liste;
-            liste= FXCollections.observableArrayList(unMois);
+            liste = FXCollections.observableArrayList(unMois);
             cbMois.setItems(liste);
         } 
     
-    
+        //peuplement combobox annee
         LocalDate aujourdhui = LocalDate.now();
         int anneeCourant = aujourdhui.getYear();
-        int start = anneeCourant;
+        //int start = anneeCourant;
         //ValueRange range = ValueRange.of(start, anneeCourant);
-        for (int i = start; i < anneeCourant; i++) {
+        for (int i = anneeCourant; i < anneeCourant; i++) {
             ObservableList<Integer> listAnnee = null;
             listAnnee.addAll(anneeCourant,anneeCourant-i);
-            //listAnnee.add(i);
             listAnnee = FXCollections.observableArrayList(anneeCourant);
             cbAnnee.setItems(listAnnee);
         }

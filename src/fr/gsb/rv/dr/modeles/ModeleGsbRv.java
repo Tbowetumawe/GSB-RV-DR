@@ -148,7 +148,7 @@ public class ModeleGsbRv {
         String req = "select vis_matricule, rap_num, rap_date_visite, rap_bilan, pra_num, rap_coefConfiance, rap_date_redaction, mot_id, rap_lu"
                 + "from RapportVisite";
         try{
-            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement( req ) ;
+            PreparedStatement requetePreparee = (PreparedStatement)connexion.prepareStatement( req );
             
             ResultSet result = requetePreparee.executeQuery() ;
             if( result.next() ){
