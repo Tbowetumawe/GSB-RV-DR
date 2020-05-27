@@ -146,10 +146,17 @@ public class ModeleGsbRv {
         List<RapportVisite> RVisite = new ArrayList<RapportVisite>();
         
         String req = "select vis_matricule, rap_num, rap_date_visite, rap_bilan, pra_num, rap_coefConfiance, rap_date_redaction, mot_id, rap_lu"
-                + "from RapportVisite";
+                + "from RapportVisite r"
+                + "inner join Motif m"
+                + "on m.mot_id = r.rap_motif"
+                + "where r.vis_matricule = ?"
+                + "and month(rap_date_visite) = ?"
+                + "and year(rap_date_visite) = ?";
         try{
             PreparedStatement requetePreparee = (PreparedStatement)connexion.prepareStatement( req );
-            
+            requetePreparee.setString( 1 , matricule );
+            requetePreparee.setInt( 2 , mois );
+            requetePreparee.setInt( 3 , annee );
             ResultSet result = requetePreparee.executeQuery() ;
             if( result.next() ){
                RapportVisite rpVisite = new RapportVisite();
@@ -159,7 +166,11 @@ public class ModeleGsbRv {
                rpVisite.setCoefConfiance(Integer.valueOf(result.getString("rap_coeConfiance")));
                rpVisite.setDateRedaction(Date.valueOf(result.getString("rap_date_redaction")).toLocalDate());
                rpVisite.setMotif(result.getString("mot_id"));
-               rpVisite.setLu(result.getBoolean("rap_lu"));
+               if(Integer.valueOf(result.getString("rap_lu")) == 1){
+               rpVisite.setLu(true);
+               }
+               rpVisite.setLeVisiteur(getVisiteur(result.getString("vis_matricule")));
+               rpVisite.setLePraticien(getPraticien(result.getInt("pra_num")));
                RVisite.add(rpVisite);
                requetePreparee.close();
             }
@@ -193,5 +204,66 @@ public class ModeleGsbRv {
         } 
         
     }   
+
+    private static Visiteur getVisiteur(String matricule) throws ConnexionException {
+        Connection connexion = ConnexionBD.getConnexion();
+        
+        String req = "select vis_matricule vis_nom, vis_prenom from Visiteur where vis_Matricule = ?";
+        try{
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement( req );
+            requetePreparee.setString( 1 , matricule );
+            ResultSet result = requetePreparee.executeQuery();
+            
+            if(result.next()){
+                Visiteur visiteur = new Visiteur() ;
+                visiteur.setMatricule( matricule );
+                visiteur.setNom( result.getString("vis_nom") );
+                visiteur.setPrenom( result.getString("vis_prenom") );
+                
+                requetePreparee.close();
+                return visiteur;
+            }
+            else{
+                return null;
+            }
+            
+        }    
+        catch (Exception e) {
+             return null;
+        }
+          
+        
+    }
+
+    private static Praticien getPraticien(int numero) throws ConnexionException{
+        Connection connexion = ConnexionBD.getConnexion();
+        
+        String req = " select pra_num, pra_nom, pra_prenom"
+                + "from Praticien"
+                + " where pra_num = ?";
+        
+        try{
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement( req );
+            requetePreparee.setInt( 1 , numero );
+            ResultSet result = requetePreparee.executeQuery();
+            
+            if(result.next()){
+                
+                Praticien pra =new Praticien();
+                pra.setNumero(result.getString("pra_num"));
+                pra.setNom(result.getString("pra_nom"));
+                pra.setPrenom(result.getString("pra_prenom"));
+                
+                requetePreparee.close();
+                 return pra;
+            }
+            else{
+                return null;
+            }
+        } 
+        catch (Exception e) {
+            return null;
+        }
+    }
     
 }
