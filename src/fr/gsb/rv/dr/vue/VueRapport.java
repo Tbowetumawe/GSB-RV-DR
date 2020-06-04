@@ -57,6 +57,10 @@ public class VueRapport {
     }
         //Platform.runLater();
 
+    public VueRapport(RapportVisite rapportv) {
+        System.out.println(rapportv); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
         /*this.dialog.setResultConverter(
                 new Callback<ButtonType>(){

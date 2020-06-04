@@ -243,8 +243,8 @@ public class Appli extends Application {
             }*/
             try{
                 changeTop(vueAccueil);
-                VueRapport vue = new VueRapport();
-                Optional<String> result = vue.getDialog().showAndWait();
+                //VueRapport vue = new VueRapport();
+                //Optional<String> result = vue.getDialog().showAndWait();
                 
             }
             catch(Exception e){

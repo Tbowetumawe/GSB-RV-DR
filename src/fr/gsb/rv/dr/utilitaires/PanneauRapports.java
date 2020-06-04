@@ -11,6 +11,7 @@ import fr.gsb.rv.dr.entites.Visiteur;
 import fr.gsb.rv.dr.modeles.ModeleGsbRv;
 import fr.gsb.rv.dr.technique.ConnexionException;
 import fr.gsb.rv.dr.technique.Mois;
+import fr.gsb.rv.dr.vue.VueRapport;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ValueRange;
@@ -55,7 +56,7 @@ public class PanneauRapports extends Pane {
     private GridPane vueRapports;
     private VBox vbox;
     private TableView<RapportVisite> tabRapports = new TableView<RapportVisite>();
-    
+    private VueRapport vue;
     
     public PanneauRapports(){
         
@@ -108,19 +109,18 @@ public class PanneauRapports extends Pane {
 
          
     
-        //peuplement combobox annee
+        List<Integer> listeAnnee = new ArrayList();
         LocalDate aujourdhui = LocalDate.now();
         int anneeCourant = aujourdhui.getYear();
-        ObservableList<Integer> listAnnee = null;
-
-        //int start = anneeCourant;
-        //ValueRange range = ValueRange.of(start, anneeCourant);
-        for (int i = anneeCourant; i < anneeCourant; i++) {
-            listAnnee.addAll(anneeCourant,anneeCourant-i);
+        ObservableList<Integer> list = null;
+        listeAnnee.add(anneeCourant);
+      
+        for (int i = 1; i < 6; i++) {
+            listeAnnee.add(anneeCourant-i);
         }
         try{
-            listAnnee = FXCollections.observableArrayList(anneeCourant);
-            cbAnnee.setItems(listAnnee);
+            list = FXCollections.observableArrayList(listeAnnee);
+            cbAnnee.setItems(list);
         }
         catch (Exception e) {
             System.out.println(e);
@@ -134,7 +134,7 @@ public class PanneauRapports extends Pane {
         hbox.getChildren().add(btnValider);
 
         vbox.getChildren().add(hbox);
-        vbox.getChildren().add(tabRapports);
+        
         
         btnValider.setOnAction((ActionEvent e)->{
             if(cbVisiteur.getValue()!= null && cbMois.getValue()!= null && cbAnnee.getValue() != null){
@@ -170,8 +170,7 @@ public class PanneauRapports extends Pane {
         colNom.setCellValueFactory( param ->{
             String nom = param.getValue().getLePraticien().getNom();
             return new SimpleStringProperty(nom);
-        }
-        );
+        });
         tabRapports.getColumns().add(colNom);
         
          colVille.setCellValueFactory(param ->{
@@ -182,12 +181,7 @@ public class PanneauRapports extends Pane {
         tabRapports.getColumns().add(colVille);
             
         colDateVisite.setCellValueFactory(new PropertyValueFactory<>("dateVisite"));
-        tabRapports.getColumns().add(colDateVisite);
-        
-        colDateRedac.setCellValueFactory(new PropertyValueFactory<>("dateRedaction"));
-        tabRapports.getColumns().add(colDateRedac);
-        
-        
+
         //modification du format d'affichage de la collone date visite et date redac'
         
         colDateVisite.setCellFactory(
@@ -206,8 +200,10 @@ public class PanneauRapports extends Pane {
                 };
             }
         );
+        tabRapports.getColumns().add(colDateVisite);
         
         
+        colDateRedac.setCellValueFactory(new PropertyValueFactory<>("dateRedaction"));
         colDateRedac.setCellFactory(
             colonne -> {
                 return new TableCell<RapportVisite, LocalDate>(){
@@ -224,7 +220,7 @@ public class PanneauRapports extends Pane {
                 };
             }
         );
-        
+        tabRapports.getColumns().add(colDateRedac);
         //application du font en fonctionde l'etat de lecture
         
        /* tabRapports.setRowFactory(
@@ -267,11 +263,16 @@ public class PanneauRapports extends Pane {
                     }
                     
                     rafraichir();
+                    vue = new VueRapport(rapportv);
+                    vue.getDialog().showAndWait();
+                    
                     
                 
                 }
             }
         );
+        
+        vbox.getChildren().add(tabRapports);
         vueRapports.add(vbox, 1, 0);     
     }
     
