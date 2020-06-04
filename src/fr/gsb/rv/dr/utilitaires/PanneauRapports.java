@@ -62,7 +62,7 @@ public class PanneauRapports extends Pane {
         vueRapports = new GridPane();
         vueRapports.setHgap(10);
         vueRapports.setVgap(10);
-        vueRapports.setPadding(new Insets(20, 150, 10, 10));
+        vueRapports.setPadding(new Insets(15, 20, 10, 10));
         
         vbox = new VBox();
         vbox.setPadding(new Insets(15, 12, 15, 12));
@@ -91,30 +91,49 @@ public class PanneauRapports extends Pane {
         catch (Exception e) {
             System.out.println(e);
         }
+        cbVisiteur.setPromptText(" Sélectionner un Visiteur ");
         
         //peuplement combobox mois 
-        for(Mois unMois : Mois.values()){
-            ObservableList<Mois> liste;
-            liste = FXCollections.observableArrayList(unMois);
-            cbMois.setItems(liste);
-        } 
+        Mois[] unMois = Mois.values();
+        ObservableList<Mois> lesMois;
+        try{
+            lesMois = FXCollections.observableArrayList(unMois);        
+            cbMois.setItems(lesMois);    
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+        cbMois.setPromptText(" Sectionner un Mois ");
+       
+
+         
     
         //peuplement combobox annee
         LocalDate aujourdhui = LocalDate.now();
         int anneeCourant = aujourdhui.getYear();
+        ObservableList<Integer> listAnnee = null;
+
         //int start = anneeCourant;
         //ValueRange range = ValueRange.of(start, anneeCourant);
         for (int i = anneeCourant; i < anneeCourant; i++) {
-            ObservableList<Integer> listAnnee = null;
             listAnnee.addAll(anneeCourant,anneeCourant-i);
+        }
+        try{
             listAnnee = FXCollections.observableArrayList(anneeCourant);
             cbAnnee.setItems(listAnnee);
         }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+        cbAnnee.setPromptText(" Sectionner une Année ");
+
         
         hbox.getChildren().add(cbVisiteur);
         hbox.getChildren().add(cbMois);
         hbox.getChildren().add(cbAnnee);
-        vbox.getChildren().addAll(hbox, btnValider);
+        hbox.getChildren().add(btnValider);
+
+        vbox.getChildren().add(hbox);
         vbox.getChildren().add(tabRapports);
         
         btnValider.setOnAction((ActionEvent e)->{
@@ -167,6 +186,7 @@ public class PanneauRapports extends Pane {
         
         colDateRedac.setCellValueFactory(new PropertyValueFactory<>("dateRedaction"));
         tabRapports.getColumns().add(colDateRedac);
+        
         
         //modification du format d'affichage de la collone date visite et date redac'
         
@@ -243,7 +263,7 @@ public class PanneauRapports extends Pane {
                         ModeleGsbRv.setRapportVisiteLu(rapportv.getLeVisiteur().getMatricule(), rapportv.getNumero());
                     }
                     catch (Exception e) {
-                        System.out.println(e);
+                        System.out.println (e);
                     }
                     
                     rafraichir();
